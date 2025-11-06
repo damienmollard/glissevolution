@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      <%= @global_config['INSTALLATION_NAME'] %>
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=0"/>
+    <% if @global_config['DISPLAY_MANIFEST'] %>
+      <meta name="msapplication-TileColor" content="#1f93ff">
+      <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+      <meta name="theme-color" content="#1f93ff">
+      <meta name="description" content="<%= @global_config['INSTALLATION_NAME'] %> is a customer support solution that helps companies engage customers over Messenger, Twitter, Telegram, WeChat, Whatsapp. Simply connect your channels and converse with your customers from a single place. Easily add new agents to your system and have them own and resolve conversations with customers. <%= @global_config['INSTALLATION_NAME'] %> also gives you real-time reports to measure your team's performance, canned responses to easily respond to frequently asked questions and private notes for agents to collaborate among themselves.">
+      <% if ENV['IOS_APP_IDENTIFIER'].present? %>
+        <meta name="apple-itunes-app" content='app-id=<%= ENV['IOS_APP_IDENTIFIER'] %>'>
+      <% end %>
+      <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+      <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+      <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+      <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+      <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+      <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+      <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+      <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+      <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+      <link class="favicon" rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+      <link class="favicon" rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+      <link class="favicon" rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+      <link rel="manifest" href="/manifest.json">
+    <% end %>
+    <link rel="icon" type="image/png" sizes="512x512" href="<%= @global_config['LOGO_THUMBNAIL'] %>">
+    <%= csrf_meta_tags %>
+    <script>
+      window.chatwootConfig = {
+        hostURL: '<%= ENV.fetch('FRONTEND_URL', '') %>',
+        helpCenterURL: '<%= ENV.fetch('HELPCENTER_URL', '') %>',
+        fbAppId: '<%= @global_config['FB_APP_ID'] %>',
+        instagramAppId: '<%= @global_config['INSTAGRAM_APP_ID'] %>',
+        googleOAuthClientId: '<%= ENV.fetch('GOOGLE_OAUTH_CLIENT_ID', nil) %>',
+        googleOAuthCallbackUrl: '<%= ENV.fetch('GOOGLE_OAUTH_CALLBACK_URL', nil) %>',
+        fbApiVersion: '<%= @global_config['FACEBOOK_API_VERSION'] %>',
+        whatsappAppId: '<%= @global_config['WHATSAPP_APP_ID'] %>',
+        whatsappConfigurationId: '<%= @global_config['WHATSAPP_CONFIGURATION_ID'] %>',
+        whatsappApiVersion: '<%= @global_config['WHATSAPP_API_VERSION'] %>',
+        signupEnabled: '<%= @global_config['ENABLE_ACCOUNT_SIGNUP'] %>',
+        isEnterprise: '<%= @global_config['IS_ENTERPRISE'] %>',
+        isMfaEnabled: '<%= Chatwoot.mfa_enabled? %>',
+        <% if @global_config['IS_ENTERPRISE'] %>
+        enterprisePlanName: '<%= @global_config['INSTALLATION_PRICING_PLAN'] %>',
+        <% end %>
+        <% if @global_config['VAPID_PUBLIC_KEY'] %>
+        vapidPublicKey: new Uint8Array(<%= Base64.urlsafe_decode64(@global_config['VAPID_PUBLIC_KEY']).bytes %>),
+        <% end %>
+        enabledLanguages: <%= available_locales_with_name.to_json.html_safe %>,
+        helpUrls: <%= feature_help_urls.to_json.html_safe %>,
+        selectedLocale: '<%= I18n.locale %>'
+      }
+      window.globalConfig = <%= raw @global_config.to_json %>
+      window.browserConfig = {
+        browser_name: '<%= browser.name %>',
+      }
+      window.errorLoggingConfig = '<%= ENV.fetch('SENTRY_FRONTEND_DSN', '') || ENV.fetch('SENTRY_DSN', '') %>'
+    </script>
+    <% if @global_config['ANALYTICS_TOKEN'].present? %>
+    <script>
+      window.analyticsConfig = {
+        token: '<%= @global_config['ANALYTICS_TOKEN'] %>',
+      }
+    </script>
+    <% end %>
+    <%= vite_client_tag %>
+    <%= vite_javascript_tag @application_pack %>
+  </head>
+  <body class="text-slate-600">
+    <div id="app"></div>
+    <noscript id="noscript">This app works best with JavaScript enabled.</noscript>
+    <%= yield %>
+    <% if @dashboard_scripts.present? %>
+      <%= @dashboard_scripts.html_safe %>
+    <% end %>
+
+
+<link
+  rel="stylesheet"
+  href="https://n8n.srv944942.hstgr.cloud/webhook/683a983c-80ee-4044-82ba-30b35f66d5d8"
+/>
+   <script type="module">
+      import { createChat } from 'https://n8n.srv944942.hstgr.cloud/webhook/ed9a9abf-f2ff-432e-b0eb-1ce50099077b';
+
+      let chatInstance;
+
+      function initChat() {
+        // Supprime le chat précédent
+        const existing = document.querySelector('#n8n-chat');
+        if (existing) existing.remove();
+
+        // Crée le conteneur du chat
+        const container = document.createElement('div');
+        container.id = 'n8n-chat';
+        document.body.appendChild(container);
+
+        // ID de session unique par page
+        const sessionId = `session-${window.location.pathname}-${Date.now()}`;
+
+        // Initialise le chat n8n
+        try {
+          chatInstance = createChat({
+            webhookUrl: 'https://n8n.srv944942.hstgr.cloud/webhook/544ae8cc-9561-412f-ba29-1058e9221d40/chat',
+            target: '#n8n-chat',
+            sessionId,
+            metadata: {
+                pageUrl: window.location.href,
+              },
+            initialMessages: [
+              "Bonjour ! 👋",
+              "Je suis votre assistant virtuel. Comment puis-je vous aider aujourd'hui ?"
+            ],
+
+            // Textes de l'interface
+            i18n: {
+              en: {
+                // Titre du chat (en haut)
+                title: "Assistant Gliss Evolution",
+                
+                // Sous-titre (sous le titre)
+                subtitle: "Posez vos questions, nous sommes là pour vous aider 24/7",
+                
+                // Pied de page (en bas, optionnel)
+                footer: "",
+                
+                // Bouton "Nouvelle conversation"
+                getStarted: "Nouvelle conversation",
+                
+                // Placeholder du champ de texte
+                inputPlaceholder: "Tapez votre question...",
+                
+                // Tooltip du bouton fermer
+                closeButtonTooltip: "Fermer le chat"
+              }
+            }
+          });
+          console.log('✅ Chat n8n initialisé');
+       } catch (err) {
+          console.error('❌ Erreur lors de la création du chat :', err);
+       }
+    }
+
+    // Détecte les changements d’URL (utile si ton site change de page sans rechargement)
+    let lastUrl = location.href;
+    new MutationObserver(() => {
+      const url = location.href;
+      if (url !== lastUrl) {
+              lastUrl = url;
+        initChat(); // recharge le chat 👈
+      }
+    }).observe(document, { subtree: true, childList: true });
+
+    // Charge le chat au démarrage
+    initChat();
+    </script>
+
+  </body>
+</html>
+
+
+
