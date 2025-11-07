@@ -5473,8 +5473,9 @@ var openInNew_default = {
 			e.style.height = `${t}px`;
 		}
 		async function Q(e, n) {
-			if (e.preventDefault(), y.value) return;
+			e.preventDefault();
 			d.value = n;
+			if (unref(c) || o.disabled?.value === !0) return;
 			await I(e);
 		}
 		return (e, t) => (openBlock(), createElementBlock("div", {
