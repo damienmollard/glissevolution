@@ -5336,7 +5336,7 @@ var openInNew_default = {
 			})) : createCommentVNode("", !0)
 		]));
 	}
-}), [["__scopeId", "data-v-e0d57af7"]]), _hoisted_1$209 = { class: "chat-inputs" }, _hoisted_2$16 = {
+}), [["__scopeId", "data-v-e0d57af7"]]), _hoisted_0$209 = { class: "chat-quick-actions" }, _hoisted_1$209 = { class: "chat-inputs" }, _hoisted_2$16 = {
 	key: 0,
 	class: "chat-input-left-panel"
 }, _hoisted_3$6 = ["disabled", "placeholder"], _hoisted_4$1 = { class: "chat-inputs-controls" }, _hoisted_5$1 = ["disabled"], _hoisted_6$1 = ["disabled"], _hoisted_7 = {
@@ -5472,11 +5472,20 @@ var openInNew_default = {
 			let t = Math.min(e.scrollHeight, 480);
 			e.style.height = `${t}px`;
 		}
+		async function Q(e, n) {
+			e.preventDefault();
+			d.value = n;
+			if (unref(c) || o.disabled?.value === !0) return;
+			await I(e);
+		}
 		return (e, t) => (openBlock(), createElementBlock("div", {
 			class: "chat-input",
 			style: normalizeStyle(T.value),
 			onKeydown: withModifiers(z, ["stop"])
-		}, [createBaseVNode("div", _hoisted_1$209, [
+		}, [createBaseVNode("div", _hoisted_0$209, [createBaseVNode("button", {
+			class: "chat-quick-action-button",
+			onClick: t[1] ||= (e) => Q(e, "::translate::")
+		}, "🌐 Traduire")]), createBaseVNode("div", _hoisted_1$209, [
 			e.$slots.leftPanel ? (openBlock(), createElementBlock("div", _hoisted_2$16, [renderSlot(e.$slots, "leftPanel", {}, void 0, !0)])) : createCommentVNode("", !0),
 			withDirectives(createBaseVNode("textarea", {
 				ref_key: "chatTextArea",
